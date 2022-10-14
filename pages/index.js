@@ -1,5 +1,7 @@
 import Seo from "../components/Seo";
 import {useEffect} from "react";
+import Link from "next/link";
+import {useRouter} from "next/router";
 
 
 export default function Home({results}) {
@@ -8,15 +10,33 @@ useEffect(()=>{
   //client에서 요청하는 것이기 때문에 server console에 안뜬다
 })
 
+  const router = useRouter();
+  const onClick= (id, title)=>{
+    router.push({
+      pathname : `/movies/${id}`,
+      query: {
+        title
+      },
+    },`/movies/${id}`)
+  }
+
     return (
     <div className="container">
         <Seo title='Home'/>
         {
           results?.map((movie)=>(
-                <div className="movie" key={movie.id}>
-                  <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
-                    <h4>{movie.original_title}</h4>
-                </div>
+            <div onClick={()=>onClick(movie.id, movie.original_title)} className="movie" key={movie.id}>
+              <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}/>
+              <Link href={{
+                pathname : `/movies/${movie.id}`,
+                query: {
+                  title : movie.original_title
+                },
+              }}
+              as={`movies/${movie.id}`}>
+                <a><h4>{movie.original_title}</h4></a>
+              </Link>
+            </div>
             ))
         }
       <style jsx>{`
