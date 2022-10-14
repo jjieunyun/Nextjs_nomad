@@ -1,8 +1,12 @@
-import { useState,useEffect } from "react";
 import Seo from "../components/Seo";
+import {useEffect} from "react";
 
 
 export default function Home({results}) {
+useEffect(()=>{
+  console.log('client에서 요청')
+  //client에서 요청하는 것이기 때문에 server console에 안뜬다
+})
 
     return (
     <div className="container">
@@ -21,6 +25,9 @@ export default function Home({results}) {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+        cursor: pointer;
         }
         .movie img {
           max-width: 100%;
@@ -42,6 +49,7 @@ export default function Home({results}) {
 
 //이름 바꾸면안됨 + client에는 보여지지 않는다.
 export async function getServerSideProps() {
+  console.log("server")
   const { results } = await (
     await fetch(`http://localhost:3000/api/movies`)
   ).json();
